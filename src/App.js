@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./App.css"; // Assuming you have corresponding CSS for styling
+import SearchBar from "./components/SearchBar";
+import SearchResults from "./components/SearchResults";
+import Playlist from "./components/Playlist";
+import "./App.css";
 
 const CLIENT_ID = "a48aec817e364e14855f34983752b58d";
 const CLIENT_SECRET = "7eb5bba77937493c81b486626fb1bc39";
@@ -8,9 +11,10 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const [songs, setSongs] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [listTitle, setListTitle] = useState(""); // State for custom list title
 
   useEffect(() => {
-    // Fetch access token on component mount
     const fetchToken = async () => {
       try {
         const authParameters = {
@@ -38,11 +42,8 @@ function App() {
     fetchToken();
   }, []);
 
-  // Search for songs
   const search = async () => {
     try {
-      console.log("Searching for songs with keyword: " + searchInput);
-
       const searchParameters = {
         method: "GET",
         headers: {
@@ -51,7 +52,6 @@ function App() {
         },
       };
 
-      // Fetch song data
       const songResponse = await fetch(
         `https://api.spotify.com/v1/search?q=${encodeURIComponent(
           searchInput
@@ -71,51 +71,40 @@ function App() {
     }
   };
 
+  const addToFavorites = (song) => {
+    if (!favorites.some((fav) => fav.id === song.id)) {
+      setFavorites([song, ...favorites]);
+    } else {
+      console.warn("Song already in favorites.");
+    }
+  };
+
+  const removeFromFavorites = (trackToRemove) => {
+    setFavorites(favorites.filter((track) => track.id !== trackToRemove.id));
+  };
+
   return (
+    <>
     <div>
       <header className="header">Jammming</header>
       <main className="main">
-        <div className="search-container">
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search For Songs"
-            onKeyPress={(event) => {
-              if (event.key === "Enter") {
-                search();
-              }
-            }}
-            onChange={(event) => setSearchInput(event.target.value)}
-          />
-          <button className="search-button" onClick={search}>
-            Search
-          </button>
-        </div>
+      <SearchBar
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          onSearch={search}
+        />
         <div className="results-section">
-          <div className="box">
-            <h1>Results</h1>
-            <div className="album-cards">
-              {songs.map((song, index) => (
-                <div className="album-card" key={index}>
-                  <img
-                    src={song.album.images[0]?.url || "placeholder.jpg"}
-                    alt={song.name}
-                    className="album-image"
-                  />
-                  <h2>{song.name}</h2>
-                  <p>Artist: {song.artists.map((artist) => artist.name).join(", ")}</p>
-                  <p>Album: {song.album.name}</p>
-                  <p>Release Date: {song.album.release_date}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="box">
-            <h1>My list</h1>
-          </div>
+          <SearchResults songs={songs} onAdd={addToFavorites} />
+          <Playlist
+            favorites={favorites}
+            onRemove={removeFromFavorites}
+            listTitle={listTitle}
+            setListTitle={setListTitle}
+          />
         </div>
       </main>
     </div>
+    </>
   );
 }
 

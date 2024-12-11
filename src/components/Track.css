@@ -1,0 +1,32 @@
+/* styles/Track.css */
+.button-favorite {
+    background-color: #3654ff;
+    color: white;
+    width: 6.5em;
+    height: 2.9em;
+    border: #3654ff 0.2em solid;
+    border-radius: 11px;
+    text-align: center;
+    transition: all 0.6s ease;
+  }
+  
+  .button-favorite:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  
+  .button-remove {
+    background-color: red;
+    color: white;
+    width: 8.5em;
+    height: 2.9em;
+    border: red 0.2em solid;
+    border-radius: 11px;
+    text-align: center;
+    transition: all 0.6s ease;
+  }
+  
+  .button-remove:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }

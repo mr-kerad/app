@@ -1,0 +1,47 @@
+.title-input-inline {
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    color: white;
+    text-align: center;
+    outline: none;
+    width: 100%;
+  }
+
+  
+.button-remove {
+  background-color: red;;
+  color: #fff;
+  width: 8.5em;
+  height: 2.9em;
+  border: red 0.2em solid;
+  border-radius: 11px;
+  text-align: center;
+  transition: all 0.6s ease;
+}
+
+.button-remove:hover {
+  opacity: 50%;
+  cursor: pointer;
+}
+  
+  
+  .button-spotify {
+    background-color: rgb(161, 255, 20);
+    color: rgb(19, 19, 19);
+    font-weight: 600;
+    width: 14em;
+    height: 3.6em;
+    border: rgb(161, 255, 20) 0.2em solid;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.6s ease;
+    margin: 36px;
+  }
+  
+  .button-spotify:hover {
+    opacity: 80%;
+    cursor: pointer;
+  }
+  
