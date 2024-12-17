@@ -2,7 +2,7 @@ import React from "react";
 import Tracklist from "./Tracklist";
 import "./Playlist.css";
 
-function Playlist({ favorites, onRemove, listTitle, setListTitle }) {
+function Playlist({ favorites, onRemove, listTitle, setListTitle, handleSavePlaylist }) {
   return (
     <div className="box">
       <h1>
@@ -15,7 +15,7 @@ function Playlist({ favorites, onRemove, listTitle, setListTitle }) {
       </h1>
       <Tracklist tracks={favorites} onAction={onRemove} actionType="Remove -" />
       <div className="button-container">
-        <button className="button-spotify">Save to Spotify</button>
+        <button className="button-spotify" onClick={handleSavePlaylist}>Save to Spotify</button>
       </div>
     </div>
   );

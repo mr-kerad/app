@@ -1,17 +1,31 @@
 .box {
-  max-width: 400px;
+  min-width: 500px;
+  width: 100%; /* Optional: To make it responsive */
+  height: 650px; /* Set a fixed height */
   flex: 1;
- align-items: center;
-  min-height: 400px;
+  align-items: center;
   background: linear-gradient(145deg, #3a3f47, #1f2227);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), 0 -4px 6px rgba(255, 255, 255, 0.05) inset;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   color: white;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* Add vertical scrolling */
+}
+
+.box::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+.box::-webkit-scrollbar-thumb {
+  background: #555; /* Scrollbar color */
+  border-radius: 10px;
+}
+
+.box::-webkit-scrollbar-thumb:hover {
+  background: #888; /* Scrollbar color on hover */
 }
 
 
@@ -25,9 +39,10 @@
 
 .box h2 {
   font-size: 0.75rem;
-  width: 200px;
+  width: 180px;
 }
 
 .box p {
   font-size: 0.6rem;
 }
+

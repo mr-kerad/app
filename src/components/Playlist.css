@@ -1,3 +1,5 @@
+
+
 .title-input-inline {
     font-size: 1.5rem;
     font-weight: bold;
@@ -13,12 +15,13 @@
 .button-remove {
   background-color: red;;
   color: #fff;
-  width: 8.5em;
+  width: 7.8em;
   height: 2.9em;
   border: red 0.2em solid;
   border-radius: 11px;
   text-align: center;
   transition: all 0.6s ease;
+  margin-right: 10px;
 }
 
 .button-remove:hover {
