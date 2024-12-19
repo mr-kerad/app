@@ -79,6 +79,40 @@ const Spotify = {
       throw error;
     }
   },
+// Fetch tracks for Playlist
+async getPlaylistTracks(playlistId) {
+  const accessToken = Spotify.getAccessToken();
+  if (!accessToken) {
+    throw new Error("Access token is required to fetch playlist tracks.");
+  }
+
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch playlist tracks.");
+    }
+
+    const data = await response.json();
+
+    return data.items.map((item) => ({
+      id: item.track.id,
+      name: item.track.name,
+      artist: item.track.artists.map((artist) => artist.name).join(", "),
+      album: item.track.album.name,
+      image: item.track.album.images?.[0]?.url || "placeholder.jpg", // Extract image safely
+      uri: item.track.uri,
+    }));
+  } catch (error) {
+    console.error("Error fetching playlist tracks:", error);
+    throw error;
+  }
+}
 }; 
+
 
 export default Spotify;

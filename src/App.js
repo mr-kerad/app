@@ -3,6 +3,7 @@ import PlaylistList from "./components/PlaylistList";
 import SearchBar from "./components/SearchBar";
 import SearchResults from "./components/SearchResults";
 import Playlist from "./components/Playlist";
+import Tracklist from "./components/Tracklist";
 import Spotify from "./Spotify";
 import "./App.css";
 
@@ -26,6 +27,9 @@ function App() {
   const [favorites, setFavorites] = useState([]);
   const [listTitle, setListTitle] = useState("My Playlist");
   const [playlists, setPlaylists] = useState([]);
+  const [selectedPlaylistName, setSelectedPlaylistName] = useState("");
+  const [selectedPlaylistTracks, setSelectedPlaylistTracks] = useState([]);
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
 
   // Retrieve access token from URL hash on app load
   useEffect(() => {
@@ -34,7 +38,7 @@ function App() {
       const params = new URLSearchParams(hash.replace("#", "?"));
       const token = params.get("access_token");
       const expiresIn = parseInt(params.get("expires_in"), 10);
-  
+
       if (token) {
         setAccessToken(token);
         Spotify.setAccessToken(token); // Set token in Spotify.js
@@ -42,7 +46,7 @@ function App() {
         localStorage.setItem("accessToken", token);
         localStorage.setItem("expiresAt", (Date.now() + expiresIn * 1000).toString());
       }
-  
+
       window.location.hash = ""; // Clear the hash from the URL
     }
   }, []);
@@ -70,7 +74,18 @@ function App() {
         }
       );
       const data = await response.json();
-      setSongs(data.tracks.items || []);
+
+      // Add album images for each track
+      const updatedSongs = data.tracks.items.map((track) => ({
+        id: track.id,
+        name: track.name,
+        artist: track.artists.map((artist) => artist.name).join(", "),
+        album: track.album.name,
+        uri: track.uri,
+        image: track.album.images[0]?.url || "placeholder.jpg",
+      }));
+
+      setSongs(updatedSongs);
     } catch (error) {
       console.error("Error searching for songs:", error);
     }
@@ -124,10 +139,10 @@ function App() {
       );
 
       alert("Playlist saved successfully!");
-      
-    // NEW: Refresh saved playlists after creating a new one
-    const updatedPlaylists = await Spotify.getUserPlaylists();
-    setPlaylists(updatedPlaylists); // Update state to refresh playlists
+
+      // Refresh saved playlists after creating a new one
+      const updatedPlaylists = await Spotify.getUserPlaylists();
+      setPlaylists(updatedPlaylists); // Update state to refresh playlists
     } catch (error) {
       console.error("Error saving playlist:", error);
       alert("Failed to save the playlist. Please try again.");
@@ -145,6 +160,68 @@ function App() {
   const removeFromFavorites = (trackToRemove) => {
     setFavorites(favorites.filter((track) => track.id !== trackToRemove.id));
   };
+
+  // Manage the selected playlist's tracks
+  const loadPlaylist = async (playlistId, playlistName) => {
+    try {
+      const tracks = await Spotify.getPlaylistTracks(playlistId);
+      setSelectedPlaylistName(playlistName); // Set the playlist name
+      setSelectedPlaylistTracks(tracks);     // Set the tracks for the playlist
+      setSelectedPlaylistId(playlistId);     // Set the playlist ID
+    } catch (error) {
+      console.error("Error loading playlist:", error);
+    }
+  };
+  
+
+  const removeTrackFromPlaylist = (trackToRemove) => {
+    const updatedTracks = selectedPlaylistTracks.filter(
+      (track) => track.id !== trackToRemove.id
+    );
+    setSelectedPlaylistTracks(updatedTracks);
+  };
+
+
+
+  const savePlaylistChangesToSpotify = async () => {
+    try {
+      if (!selectedPlaylistId || !selectedPlaylistTracks.length) {
+        alert("No playlist selected or the playlist is empty.");
+        return;
+      }
+  
+      const trackUris = selectedPlaylistTracks.map((track) => track.uri);
+  
+      const response = await fetch(
+        `https://api.spotify.com/v1/playlists/${selectedPlaylistId}/tracks`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uris: trackUris,
+          }),
+        }
+      );
+  
+      if (response.ok) {
+        alert("Playlist changes saved to Spotify successfully!");
+      } else {
+        const errorResponse = await response.json();
+        console.error("Error saving changes to Spotify:", errorResponse);
+        alert(`Failed to save changes: ${errorResponse.error.message}`);
+      }
+    } catch (error) {
+      console.error("Error saving playlist changes:", error);
+      alert("An error occurred while saving changes.");
+    }
+  };
+  
+  
+  
+  
 
   return (
     <div>
@@ -169,7 +246,24 @@ function App() {
             setListTitle={setListTitle}
             handleSavePlaylist={savePlaylist}
           />
-          <PlaylistList playlists={playlists} setPlaylists={setPlaylists} />
+          <PlaylistList
+            playlists={playlists}
+            setPlaylists={setPlaylists}
+            loadPlaylist={loadPlaylist} // Pass the loadPlaylist function
+          />
+          {selectedPlaylistTracks.length > 0 && (
+            <div className="box">
+              <h1>{selectedPlaylistName}</h1> 
+              <Tracklist
+                tracks={selectedPlaylistTracks} // Pass tracks to Tracklist
+                onAction={(track) => removeTrackFromPlaylist(track)} // Pass full track object
+                actionType="Remove -" 
+              />
+              <button className="button-spotify" onClick={savePlaylistChangesToSpotify}>
+                Save Changes to Spotify
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>

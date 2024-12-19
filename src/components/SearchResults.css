@@ -1,5 +1,5 @@
 .box {
-  min-width: 500px;
+  min-width: 300px;
   width: 100%; /* Optional: To make it responsive */
   height: 650px; /* Set a fixed height */
   flex: 1;

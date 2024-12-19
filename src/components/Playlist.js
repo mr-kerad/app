@@ -2,7 +2,9 @@ import React from "react";
 import Tracklist from "./Tracklist";
 import "./Playlist.css";
 
-function Playlist({ favorites, onRemove, listTitle, setListTitle, handleSavePlaylist }) {
+function Playlist({ favorites, onRemove, listTitle, setListTitle, handleSavePlaylist,
+  selectedPlaylistTracks = [],
+  selectedPlaylistName = "", }) {
   return (
     <div className="box">
       <h1>
