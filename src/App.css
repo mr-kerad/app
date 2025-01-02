@@ -22,14 +22,14 @@ body {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  width: 100%; 
+  max-width: 1200px;
 }
 
 .results-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  width: 100%; 
-  max-width: 1200px; 
+  gap: 20px; 
   margin: 0 auto;
   padding: 20px;
 }
@@ -68,25 +68,25 @@ body {
 
 /* Responsive Design */
 @media (max-width: 1440px) {
-  .results-section {
+  .main {
     max-width: 1440px; 
   }
 }
 
 @media (max-width: 1024px) {
-  .results-section {
+  .main {
     max-width: 1024px; 
   }
 }
 
 @media (max-width: 768px) {
-  .results-section {
+  .main {
     max-width: 768px; 
   }
 }
 
 @media (max-width: 480px) {
-  .results-section {
+  .main {
     max-width: 480px; 
   }
 }
