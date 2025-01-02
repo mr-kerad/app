@@ -65,4 +65,18 @@ body {
   border-bottom: 1px solid #444;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .results-section {
+    max-width: 768px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .results-section {
+    max-width: 480px; 
+  }
+}
+
+
 
