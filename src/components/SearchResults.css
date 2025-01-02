@@ -55,7 +55,7 @@
 @media (max-width: 768px) {
   .box {
     flex: 1 1 calc(100% - 30px); /* Single column layout */
-    margin: 15px 0; /* Adjust margin for smaller screens */
+    margin: 10px 15px; /* Adjust margin for smaller screens */
   }
 }
 
