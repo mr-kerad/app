@@ -259,9 +259,11 @@ function App() {
                 onAction={(track) => removeTrackFromPlaylist(track)} // Pass full track object
                 actionType="Remove -" 
               />
+              <div className="button-container">
               <button className="button-spotify" onClick={savePlaylistChangesToSpotify}>
-                Save Changes to Spotify
+                Save Changes
               </button>
+              </div>
             </div>
           )}
         </div>

@@ -1,18 +1,23 @@
 .box {
-  min-width: 300px;
-  width: 100%; /* Optional: To make it responsive */
-  height: 650px; /* Set a fixed height */
-  flex: 1;
-  align-items: center;
+  flex: 1 1 calc(33.333% - 40px); 
+  max-width: 100%; 
+  height: 300px; /* Adjust height dynamically */
   background: linear-gradient(145deg, #3a3f47, #1f2227);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), 0 -4px 6px rgba(255, 255, 255, 0.05) inset;
+  margin: 10px 10px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3),
+              0 -4px 6px rgba(255, 255, 255, 0.05) inset;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   color: white;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Add vertical scrolling */
+  overflow-y: auto;
+}
+
+.box:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5);
 }
 
 .box::-webkit-scrollbar {
@@ -44,5 +49,25 @@
 
 .box p {
   font-size: 0.6rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .box {
+    flex: 1 1 calc(100% - 20px); /* Single column layout */
+    margin: 10px 0; /* Adjust margin for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .results-section {
+    padding: 5px; /* Reduce padding */
+    gap: 10px; /* Reduce gap between boxes */
+  }
+  
+  .box {
+    padding: 15px; /* Reduce padding inside the box */
+    font-size: 0.9rem; /* Adjust font size for smaller screens */
+  }
 }
 
