@@ -67,6 +67,18 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1440px) {
+  .results-section {
+    max-width: 1440px; 
+  }
+}
+
+@media (max-width: 1024px) {
+  .results-section {
+    max-width: 1024px; 
+  }
+}
+
 @media (max-width: 768px) {
   .results-section {
     max-width: 768px; 
