@@ -8,7 +8,7 @@ import Spotify from "./Spotify";
 import "./App.css";
 
 const CLIENT_ID = "a48aec817e364e14855f34983752b58d";
-const REDIRECT_URI = "https://mr-kerad-jammming.netlify.app/";
+const REDIRECT_URI = "http://localhost:3000/";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const SCOPES = [
   "user-read-private",
